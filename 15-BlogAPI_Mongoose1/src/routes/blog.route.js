@@ -2,21 +2,20 @@
 /* ====================================================== */
 /*                     BLOG API Routes               */
 /* ====================================================== */
-const router=require("express").Router()
+const router = require("express").Router(); //* Express Router modülünü dahil etme
 
-const { route } = require("express/lib/router")
-const {BlogPost}=require("../controllers/blog.controller")
+const { BlogPost } = require("../controllers/blog.controller"); //* Blog ile ilgili işlemleri yapacak controller'ı dahil etme
 
-
+// '/posts' endpoint'i için route tanımlamaları
 router.route('/posts')
-    .get(BlogPost.list)
-    .post(BlogPost.create)
+    .get(BlogPost.list) //* Tüm blog gönderilerini listelemek için GET isteği
+    .post(BlogPost.create) //* Yeni bir blog gönderisi oluşturmak için POST isteği
 
+// '/posts/:postId' endpoint'i için route tanımlamaları
 router.route('/posts/:postId')
-    .get(BlogPost.read)
-    .put(BlogPost.update) // put patch aynı
-    .patch(BlogPost.update) 
-    .delete(BlogPost.delete)
-  
+    .get(BlogPost.read) //* Belirli bir ID'ye sahip blog gönderisini okumak için GET isteği
+    .put(BlogPost.update) //* Belirli bir ID'ye sahip blog gönderisini güncellemek için PUT isteği
+    .patch(BlogPost.update) //* PUT ile aynı işlevi görür, belirli bir ID'ye sahip blog gönderisini kısmi güncellemek için PATCH isteği
+    .delete(BlogPost.delete); //* Belirli bir ID'ye sahip blog gönderisini silmek için DELETE isteği
 
-module.exports=router
+module.exports = router; //* Yapılandırılmış router'ı dışa aktarma, böylece başka dosyalardan erişilebilir hale gelir.

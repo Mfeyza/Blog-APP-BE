@@ -1,76 +1,55 @@
-"use strict"
+"use strict";
 /*
     BLOG API MODELS
+    Bu bölüm, blog API'si için veritabanı modellerini tanımlar.
 */
 
-const mongoose=require("mongoose")
+const mongoose = require("mongoose"); //' Mongoose kütüphanesini dahil etme
 
-
-const blogPostSchema= new mongoose.Schema(
-    {
-     //_id
-     //categoryId   
-     title:{
-        type:String,
-        trim: true,
-        required: true
-     },
-     content:{
-        type:String,
-        trim: true,
-        required: true
-     }
-    //  createdAt,
-    //  updatedAt
-     
+//' Blog gönderileri için mongoose şeması oluşturma
+const blogPostSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String, //' Veri tipi olarak String
+      trim: true, //' Başlangıç ve sonundaki boşlukları kırpar
+      required: true, //' Bu alanın doldurulması zorunludur
     },
-    {
-        collection:"blogPost",
-        timestamps:true
-    }
-)
-// mongoose.model('model ismi','hangi şemadan')
-
-// const BlogPostModel= mongoose.model('BlogPost',blogPostSchema)
-// module.exports={
-//     BlogPost: BlogPostModel,
-
-// }
-
-module.exports={
-    BlogPost:  mongoose.model('BlogPost',blogPostSchema)
-
-}
-
-
-
-// const nameSchema= new mongoose.Schema({fields},{tablo adı})
-/*
-const nameSchema= new mongoose.Schema(
-    {
-        //    _id: // auto created and increment
-
-        // fieldName: Type // short form
-        // fieldName: String,
-        // fieldName2: BigInt
-
-        fieldName: {
-            type: String,
-            default: null,
-            trim: true,  
-            unique: true, // benzersiz kayıt
-            select: false, //model çağrıldığında gelsinmi
-            index: false, // aramalarda erişimi hızlandırır
-            required: true, // veri girişi gerklimi
-            required: [true, 'error message'], // gereklimi değilmi , hata mesajı
-            enum:[[1,2,3],'error message'], // belirli bir pattern e göre veri girişi
-            validate: [function(data){ return true},'error message'],// veri fonksiyon ile doğrulama
-            get: function(data){ return data} ,      // veriyi çağırırken çalışacak fonksiyon
-            set: function(data){ return data}       // veriyi kaydederken çalışacak fonksiyon
-        }
+    content: {
+      type: String, //' Veri tipi olarak String
+      trim: true, //' Başlangıç ve sonundaki boşlukları kırpar
+      required: true, //' Bu alanın doldurulması zorunludur
     },
-    {
-        collection:'collectionName', // tablo ismi
-        timestamps: true // createdate, updateDate
-    }
-)*/
+  },
+  {
+    collection: "blogPost", //' Bu şema MongoDB'de "blogPost" koleksiyonunu temsil eder
+    timestamps: true, //' Oluşturulma ve güncellenme zaman damgalarını otomatik olarak yönetir
+  }
+);
+
+//' BlogPost adında bir model oluşturma ve bu modeli blogPostSchema şeması ile ilişkilendirme
+module.exports = {
+  BlogPost: mongoose.model("BlogPost", blogPostSchema), //!BlogPost adında bir model oluştur, bu model blogPostSchema şemasını kullanarak veritabanı işlemleri gerçekleştirecek. Bu modeli, modülü içe aktaran dosyalarda BlogPost adı altında erişilebilir yap
+};
+
+// const nameSchema = new mongoose.Schema(
+//     {
+//         fieldName: {
+//             type: String, // Alanın veri tipi
+//             default: null, // Varsayılan değer
+//             trim: true,  // String değerlerin başında ve sonunda boşlukları kırpar
+//             unique: true, // Bu alana sahip belgelerin benzersiz olmasını zorunlu kılar
+//             select: false, // Bu alanın varsayılan sorgularda döndürülmemesini sağlar
+//             index: false, // Bu alana göre indeks oluşturulup oluşturulmayacağı
+//             required: true, // Bu alanın zorunlu olup olmadığı
+//             required: [true, 'error message'], // Alan zorunlu ise ve veri sağlanmadığında gösterilecek hata mesajı
+//             enum: [[1,2,3], 'error message'], // Bu alanın alabileceği değerler ve uymadığında gösterilecek hata mesajı
+//             validate: [function(data){ return true; }, 'error message'], // Özel doğrulama fonksiyonu ve hata mesajı
+//             get: function(data){ return data; }, // Veriyi okurken çalıştırılacak getter fonksiyonu
+//             set: function(data){ return data; } // Veriyi kaydederken çalıştırılacak setter fonksiyonu
+//         }
+//     },
+//     {
+//         collection: 'collectionName', // Şemanın MongoDB'deki koleksiyon ismi
+//         timestamps: true // createdAt ve updatedAt alanlarını otomatik olarak ekler
+//     }
+// );

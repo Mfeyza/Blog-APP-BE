@@ -3,67 +3,56 @@
 /*                     BLOG API CONTROLLERS               */
 /* ====================================================== */
 
-require("express-async-errors")
+require("express-async-errors"); //' Async fonksiyonlarda hata yakalamayı kolaylaştırır.
 
-const { BlogPost}=require("../models/blog.model")
+const { BlogPost } = require("../models/blog.model"); //* BlogPost modelini models klasöründen içe aktarır.
 
-// module.exports={
-//     "key":"value",
-//     "key2":"value",
-    
-// }
-// module.exports.key:"value"
-// module.exports.key2:"value"
-
-module.exports.BlogPost={
-
-    list: async(req,res)=>{
-        const data=await BlogPost.find()
+//* BlogPost controller objesini dışa aktarır. Bu obje, blog postları ile ilgili işlemleri yönetir.
+module.exports.BlogPost = {
+    //? Tüm blog postlarını listeler.
+    list: async (req, res) => {
+        const data = await BlogPost.find(); //' BlogPost modeli üzerinden tüm dokümanları bulur.
         res.status(200).send({
-            error:false,
-            data:data
-
-        })
-
+            error: false, //' Hata olmadığını belirten flag
+            data: data //' Bulunan dokümanları döndürür.
+        });
     },
-    create: async(req,res)=>{
-        
 
-        const data=await BlogPost.create(req.body)
+    //? Yeni bir blog postu oluşturur.
+    create: async (req, res) => {
+        const data = await BlogPost.create(req.body); //* req.body'deki veriyi kullanarak yeni bir blog postu oluşturur.
         res.status(201).send({
-            error:false,
-            body:req.body,
-            data:data
-
-        })
-
+            error: false, //' Hata olmadığını belirten flag
+            body: req.body, //' İstemciden alınan gövdeyi döndürür.
+            data: data //' Oluşturulan dokümanı döndürür.
+        });
     },
-    read: async(req,res)=>{
-        const data=await BlogPost.find({_id:req.params.postId})
+
+    //? Belirli bir ID'ye sahip blog postunu getirir.
+    read: async (req, res) => {
+        const data = await BlogPost.find({ _id: req.params.postId }); //* URL'den alınan postId ile belirli bir dokümanı bulur.
         res.status(202).send({
-            error:false,
-            data:data 
-
-        })
-
+            error: false, //' Hata olmadığını belirten flag
+            data: data //' Bulunan dokümanı döndürür.
+        });
     },
-    update: async(req,res)=>{
-        const data=await BlogPost.updateOne({_id:req.params.postId},req.body)
-        const newdata=await BlogPost.find({_id:req.params.postId})
+
+    //? Belirli bir ID'ye sahip blog postunu günceller.
+    update: async (req, res) => {
+        const data = await BlogPost.updateOne({ _id: req.params.postId }, req.body); //* Belirli bir ID'ye sahip dokümanı günceller.
+        const newData = await BlogPost.find({ _id: req.params.postId }); //' Güncellenmiş dokümanı tekrar bulur.
         res.status(202).send({
-            error:false,
-            body:req.body,
-            data:data, // info about update
-            // güncel veriyi istiyorsan tekrar çağır
-            newdata:newdata
-
-        })
-
+            error: false, //' Hata olmadığını belirten flag
+            body: req.body, //' İstemciden alınan gövdeyi döndürür.
+            data: data, //' Güncelleme işlemi hakkında bilgi verir.
+            newData: newData //' Güncellenmiş dokümanı döndürür.
+        });
     },
-    delete: async(req,res)=>{
-        const data=await BlogPost.deleteOne({_id:req.params.postId})
-        // console.log(data);
-        res.sendStatus((data.deletedCount>=1)? 204:404)
-        
+
+    //? Belirli bir ID'ye sahip blog postunu siler.
+    delete: async (req, res) => {
+        const data = await BlogPost.deleteOne({ _id: req.params.postId }); //* Belirli bir ID'ye sahip dokümanı siler.
+        //! Silme işlemi başarılıysa 204, başarısızsa 404 durum kodunu döndürür.
+        res.sendStatus((data.deletedCount >= 1) ? 204 : 404); 
     }
-}
+};
