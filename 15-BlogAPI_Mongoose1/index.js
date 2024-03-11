@@ -1,30 +1,40 @@
 "use strict"
+
 /*
     BLOG API with Mongoose
+
 */
+
+// Gerekli paketlerin kurulumu için komutlar
 /*
     $ npm i express dotenv express-async-errors
     $ npm i mongoose
 */
-const express=require("express")
-const app=express()
 
+//' Express modülünü dahil etme ve app nesnesini oluşturma
+const express = require("express")
+const app = express()
 
-app.use(express.json()) // yukarıda  kalsın
+app.use(express.json()) //' Gelen isteklerdeki JSON verilerini otomatik olarak ayrıştırır.
 
+// 'Ortam değişkenlerini .env dosyasından yükleme
 require('dotenv').config()
-const PORT=process.env.PORT
-const HOST=process.env.HOST
+const PORT = process.env.PORT //' Sunucunun çalışacağı port numarası
+const HOST = process.env.HOST //' Sunucunun çalışacağı host adresi
 
-/* DB connection  */
-require('./src/dbConnection') // dotenv çalıştıktan sonra 
+/* Veritabanı bağlantısının kurulması */
+require('./src/dbConnection') //' dotenv yüklendikten sonra veritabanı bağlantısını kurar.
 
-app.all('/',(req,res)=>{
-    res.send('WELCOME BLOG API PROJECT')
+//' Ana yolu tanımlama ve karşılama mesajı gönderme
+app.all('/', (req, res) => {
+    res.send('WELCOME TO THE BLOG API PROJECT')
 })
 
-app.use('/blog',require("./src/routes/blog.route"))
+//' Blog ile ilgili route'ları tanımlama
+app.use('/blog', require("./src/routes/blog.route"))
 
-app.use(require('./src/errorHandler')) // aşağıda kalsın
+//' Hata yönetimi için errorHandler'ı kullanma
+app.use(require('./src/errorHandler')) //! Uygulamanın en sonunda yer almalıdır, böylece tüm hatalar bu middleware'e yönlendirilir.
 
-app.listen(PORT,()=> console.log(` Server Running on http://${HOST}:${PORT}`))
+//' Sunucuyu belirtilen port ve host üzerinde çalıştırma
+app.listen(PORT, () => console.log(`Server Running on http://${HOST}:${PORT}`))
