@@ -6,9 +6,31 @@
 
 const mongoose = require("mongoose"); //' Mongoose kütüphanesini dahil etme
 
-//' Blog gönderileri için mongoose şeması oluşturma
+//' BLOG CATEGORY: 
+
+const blogCategorySchema= new mongoose.Schema({
+name: {
+    type:String,
+    trim:true,
+    required:true
+}
+
+},{
+    collection: 'blogCategory',
+    timeseries:true //' ayarlar
+})
+
+
+
+
+//' Blog gönderileri için mongoose şeması oluşturma BLOG POST : 
 const blogPostSchema = new mongoose.Schema(
   {
+    blogCategoryId: {
+      type:mongoose.Schema.Types.ObjectId ,//foreignKey,relationalID  
+      ref:'BlogCategory', //! ref de yazdığım model ismi mongoose da yazdığım isimle aynı olmak zorunda
+      
+    },
     title: {
       type: String, //' Veri tipi olarak String
       trim: true, //' Başlangıç ve sonundaki boşlukları kırpar
@@ -19,6 +41,10 @@ const blogPostSchema = new mongoose.Schema(
       trim: true, //' Başlangıç ve sonundaki boşlukları kırpar
       required: true, //' Bu alanın doldurulması zorunludur
     },
+    published:{
+      type:Boolean,
+      default:true
+    }
   },
   {
     collection: "blogPost", //' Bu şema MongoDB'de "blogPost" koleksiyonunu temsil eder
@@ -28,8 +54,21 @@ const blogPostSchema = new mongoose.Schema(
 
 //' BlogPost adında bir model oluşturma ve bu modeli blogPostSchema şeması ile ilişkilendirme
 module.exports = {
+ BlogCategory: mongoose.model("BlogCategory", blogCategorySchema),
   BlogPost: mongoose.model("BlogPost", blogPostSchema), //!BlogPost adında bir model oluştur, bu model blogPostSchema şemasını kullanarak veritabanı işlemleri gerçekleştirecek. Bu modeli, modülü içe aktaran dosyalarda BlogPost adı altında erişilebilir yap
 };
+
+
+
+
+
+
+
+
+
+
+
+
 
 // const nameSchema = new mongoose.Schema(
 //     {

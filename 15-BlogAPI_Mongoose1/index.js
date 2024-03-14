@@ -23,18 +23,36 @@ const PORT = process.env.PORT //' Sunucunun çalışacağı port numarası
 const HOST = process.env.HOST //' Sunucunun çalışacağı host adresi
 
 /* Veritabanı bağlantısının kurulması */
-require('./src/dbConnection') //' dotenv yüklendikten sonra veritabanı bağlantısını kurar.
+require('./src/configs/dbConnection') //' dotenv yüklendikten sonra veritabanı bağlantısını kurar.
+/* ------------------------------------------------------- */
+// SessionCookies:
+// http://expressjs.com/en/resources/middleware/cookie-session.html
+// https://www.npmjs.com/package/cookie-session
+//* $ npm i cookie-session
+
+const session = require('cookie-session')
+app.use(session({
+    secret: process.env.SECRET_KEY
+}))
 
 //' Ana yolu tanımlama ve karşılama mesajı gönderme
 app.all('/', (req, res) => {
-    res.send('WELCOME TO THE BLOG API PROJECT')
+    // res.send('WELCOME TO THE BLOG API PROJECT')
+    res.send({
+        error:false,
+        message:"welcome blog apı project",
+        loginUser:req.session
+    })
 })
 
 //' Blog ile ilgili route'ları tanımlama
-app.use('/blog', require("./src/routes/blog.route"))
+app.use('/blog', require("./src/routes/blog.router"))
+app.use('/user', require("./src/routes/user.router"))
 
 //' Hata yönetimi için errorHandler'ı kullanma
-app.use(require('./src/errorHandler')) //! Uygulamanın en sonunda yer almalıdır, böylece tüm hatalar bu middleware'e yönlendirilir.
+app.use(require('./src/middlewares/errorHandler')) //! Uygulamanın en sonunda yer almalıdır, böylece tüm hatalar bu middleware'e yönlendirilir.
 
 //' Sunucuyu belirtilen port ve host üzerinde çalıştırma
 app.listen(PORT, () => console.log(`Server Running on http://${HOST}:${PORT}`))
+
+// require('./src/sync')()

@@ -4,7 +4,18 @@
 /* ====================================================== */
 const router = require("express").Router(); //* Express Router modülünü dahil etme
 
-const { BlogPost } = require("../controllers/blog.controller"); //* Blog ile ilgili işlemleri yapacak controller'ı dahil etme
+const { BlogPost,BlogCategory } = require("../controllers/blog.controller"); //* Blog ile ilgili işlemleri yapacak controller'ı dahil etme
+
+// BlogCategory:
+router.route('/categories')
+    .get(BlogCategory.list)
+    .post(BlogCategory.create)
+router.route('/categories/:categoryId')
+    .get(BlogCategory.read)
+    .put(BlogCategory.update) // put patch aynı
+    .patch(BlogCategory.update)
+    .delete(BlogCategory.delete)
+
 
 // '/posts' endpoint'i için route tanımlamaları
 router.route('/posts')
