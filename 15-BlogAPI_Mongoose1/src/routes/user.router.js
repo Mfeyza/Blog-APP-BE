@@ -5,7 +5,9 @@
 const router = require("express").Router()
 
 const User = require("../controllers/user.controller")
-
+// Login/Logout:
+router.post('/login', User.login)
+router.all('/logout', User.logout)
 // User:
 router.route('/')
     .get(User.list)
@@ -17,8 +19,6 @@ router.route('/:userId')
     .delete(User.delete)
 
 
-// Login/Logout:
-router.post('/login', User.login)
-router.all('/logout', User.logout)
+
 
 module.exports = router
