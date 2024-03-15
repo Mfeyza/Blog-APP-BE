@@ -56,13 +56,13 @@ module.exports.BlogPost = {
  
   //? Tüm blog postlarını listeler.
   list: async (req, res) => {
-    const filter=req.query?.filter || {}
-    console.log(filter)
-    const data = await BlogPost.find(); //' BlogPost modeli üzerinden tüm dokümanları bulur.
+    const data = await res.getModelList(BlogPost)
+
     res.status(200).send({
-      error: false, //' Hata olmadığını belirten flag
-      data: data, //' Bulunan dokümanları döndürür.
-    });
+        error: false,
+        details: await res.getModelListDetails(BlogPost),
+        data: data
+    })
   },
 
   //? Yeni bir blog postu oluşturur.

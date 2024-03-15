@@ -64,27 +64,36 @@ module.exports = (req, res, next) => {
     res.getModelListDetails = async (Model) => {
 
         const data = await Model.find({ ...filter, ...search })
-
         let details = {
-            filter,
-            search,
-            sort,
-            skip,
-            limit,
-            page,
+            filter, // Kullanılan filtre parametrelerini saklar.
+            search, // Kullanılan arama parametrelerini saklar.
+            sort, // Kullanılan sıralama parametrelerini saklar.
+            skip, // Atlanacak kayıt sayısını saklar.
+            limit, // Sayfa başına gösterilecek kayıt sayısını saklar.
+            page, // Geçerli sayfa numarasını saklar.
             pages: {
-                previous: (page > 0 ? page : false),
-                current: page + 1,
-                next: page + 2,
-                total: Math.ceil(data.length / limit)
+              // Sayfalama bilgilerini içeren bir alt obje.
+              previous: page > 0 ? page : false, // Bir önceki sayfa varsa onun numarasını, yoksa false değerini saklar.
+              current: page + 1, // Geçerli sayfa numarası
+              next: page + 2, // Bir sonraki sayfa numarasını hesaplar.
+              total: Math.ceil(data.length / limit) // Toplam sayfa sayısını hesaplar.
             },
-            totalRecords: data.length,
-        }
-        details.pages.next = (details.pages.next > details.pages.total ? false : details.pages.next)
-        if (details.totalRecords <= limit) details.pages = false
-        return details
-    }
-
-    next()
-
-}
+            totalRecords: data.length, // Toplam kayıt sayısını saklar.
+          };
+          
+          // Eğer bir sonraki sayfa mevcut toplam sayfa sayısını aşarsa, false olarak ayarlar.
+          details.pages.next = details.pages.next > details.pages.total ? false : details.pages.next;
+          
+          // Eğer toplam kayıt sayısı, sayfa limitini aşmıyorsa, sayfalama bilgileri olarak false ayarlar.
+          if (details.totalRecords <= limit) details.pages = false;
+          
+          // Hazırlanan detaylar objesini döndürür.
+          return details;
+          
+          
+          
+          
+           }
+           next();
+          
+          }
