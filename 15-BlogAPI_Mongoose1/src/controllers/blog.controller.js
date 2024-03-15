@@ -9,11 +9,10 @@ const { BlogCategory, BlogPost } = require("../models/blog.model"); //* BlogPost
 
 module.exports.BlogCategory = {
   list: async (req, res) => {
-    const data = await res.getModelList(BlogCategory)
+    const data = await BlogCategory.find();
     res.status(200).send({
-        error: false,
-        details: await res.getModelListDetails(BlogCategory),
-        data: data
+      error: false,
+      data: data,
     });
   },
   create: async (req, res) => {
@@ -57,13 +56,13 @@ module.exports.BlogPost = {
  
   //? Tüm blog postlarını listeler.
   list: async (req, res) => {
-    const data = await res.getModelList(BlogPost)
-
-        res.status(200).send({
-            error: false,
-            details: await res.getModelListDetails(BlogPost),
-            data: data
-        })
+    const filter=req.query?.filter || {}
+    console.log(filter)
+    const data = await BlogPost.find(); //' BlogPost modeli üzerinden tüm dokümanları bulur.
+    res.status(200).send({
+      error: false, //' Hata olmadığını belirten flag
+      data: data, //' Bulunan dokümanları döndürür.
+    });
   },
 
   //? Yeni bir blog postu oluşturur.

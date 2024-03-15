@@ -12,7 +12,7 @@ router.route('/categories')
     .post(BlogCategory.create)
 router.route('/categories/:categoryId')
     .get(BlogCategory.read)
-    .put(BlogCategory.update) // put patch aynı
+    .put(BlogCategory.update) 
     .patch(BlogCategory.update)
     .delete(BlogCategory.delete)
 
