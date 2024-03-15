@@ -9,10 +9,11 @@ const { BlogCategory, BlogPost } = require("../models/blog.model"); //* BlogPost
 
 module.exports.BlogCategory = {
   list: async (req, res) => {
-    const data = await BlogCategory.find();
+    const data = await res.getModelList(BlogCategory)
     res.status(200).send({
-      error: false,
-      data: data,
+        error: false,
+        details: await res.getModelListDetails(BlogCategory),
+        data: data
     });
   },
   create: async (req, res) => {
@@ -53,13 +54,16 @@ module.exports.BlogCategory = {
 
 //* BlogPost controller objesini dışa aktarır. Bu obje, blog postları ile ilgili işlemleri yönetir.
 module.exports.BlogPost = {
+ 
   //? Tüm blog postlarını listeler.
   list: async (req, res) => {
-    const data = await BlogPost.find(); //' BlogPost modeli üzerinden tüm dokümanları bulur.
-    res.status(200).send({
-      error: false, //' Hata olmadığını belirten flag
-      data: data, //' Bulunan dokümanları döndürür.
-    });
+    const data = await res.getModelList(BlogPost)
+
+        res.status(200).send({
+            error: false,
+            details: await res.getModelListDetails(BlogPost),
+            data: data
+        })
   },
 
   //? Yeni bir blog postu oluşturur.

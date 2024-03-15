@@ -35,14 +35,27 @@ app.use(session({
     secret: process.env.SECRET_KEY
 }))
 
+// Check logined User:
+app.use(require('./src/middlewares/userControl'))
+app.use(require('./src/middlewares/findSearchSortPage'))
+
 //' Ana yolu tanımlama ve karşılama mesajı gönderme
 app.all('/', (req, res) => {
-    // res.send('WELCOME TO THE BLOG API PROJECT')
-    res.send({
-        error:false,
-        message:"welcome blog apı project",
-        loginUser:req.session
-    })
+    // res.send('WELCOME BLOG API PROJECT')
+    if (req.isLogin) {
+        res.send({
+            error: false,
+            message: 'WELCOME BLOG API PROJECT',
+            session: req.session,
+            user: req.user
+        })
+    } else {
+        res.send({
+            error: false,
+            message: 'WELCOME BLOG API PROJECT',
+            session: req.session,
+        })
+    }
 })
 
 //' Blog ile ilgili route'ları tanımlama
